@@ -1,0 +1,415 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Endless Holo Card Generator</title>
+  <!--
+  ==========================================
+  Endless Holo Card Generator — Single File
+  ==========================================
+  Cara pakai (super cepat):
+  1) Buat repo GitHub baru, tambah file ini sebagai `index.html`.
+  2) Buat folder `assets/` dan taruh logo kamu di: `assets/endless-logo.png` (background transparan ideal).
+  3) Deploy ke Vercel → pilih Project dari repo → semuanya statis, tidak perlu server.Opsi Lanjutan:
+
+Ingin kualitas remove background lebih konsisten? Ganti client-side lib dengan API di serverless function.
+
+Ubah template warna di konstanta TEMPLATES.
+
+Atur dimensi export di <canvas> (saat ini 744×1039 px, rasio 2.5"×3.5"). -->
+
+
+  <style>
+    :root{ --bg:#0b0f14; --panel:#111827; --muted:#94a3b8; --accent:#38bdf8; --ring:rgba(56,189,248,0.35); }
+    *{box-sizing:border-box}
+    body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+      color:#e5e7eb; background: radial-gradient(1000px 600px at 10% -10%, #0ea5e9 0%, transparent 40%), radial-gradient(800px 400px at 110% 10%, #7c3aed 0%, transparent 30%), var(--bg);
+      min-height:100vh; display:grid; place-items:stretch; }
+    .app{display:grid; grid-template-columns: 360px 1fr; gap:18px; padding:18px; max-width:1200px; margin:0 auto; width:100%;}
+    @media (max-width: 980px){ .app{ grid-template-columns: 1fr; } }
+    .card{ background: linear-gradient(180deg, rgba(17,24,39,0.85), rgba(17,24,39,0.65)); border:1px solid #1f2937; border-radius:18px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    .panel{ padding:16px; }
+    h1{ font-size:20px; margin:0; letter-spacing:0.3px; }
+    .muted{ color: var(--muted); font-size:12px; }
+    .row{ display:grid; grid-template-columns: 1fr; gap:10px; margin-top:12px; }
+    label{ font-size:12px; color:#cbd5e1; }
+    input[type="text"], input[type="number"], select{ width:100%; padding:10px 12px; border-radius:12px; border:1px solid #334155; background:#0f172a; color:#e5e7eb; outline:none; }
+    input[type="file"]{ width:100%; }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; border-radius:12px; background: linear-gradient(135deg, #22d3ee, #3b82f6 40%, #a855f7 100%);
+      color:white; border:none; cursor:pointer; box-shadow: 0 8px 24px rgba(56,189,248,0.35); transition: transform .08s ease; }
+    .btn:active{ transform: translateY(1px) }
+    .btn.secondary{ background:#0b1220; border:1px solid #334155; box-shadow:none; }
+    .preview-wrap{ position:relative; display:grid; grid-template-rows: auto 1fr; gap:12px; padding:16px; }
+    .canvas-wrap{ position:relative; width:100%; display:grid; place-items:center; }
+    canvas{ width: 372px; height: 519px; border-radius:18px; border:1px solid #1f2937; background:#111827; box-shadow: 0 14px 40px rgba(0,0,0,0.45); }
+    .toolbar{ display:flex; gap:10px; flex-wrap:wrap; }
+    .notice{ font-size:12px; color:#a3e635; background: rgba(163,230,53,0.08); border:1px solid rgba(163,230,53,0.25); padding:8px 10px; border-radius:10px; }
+    .warn{ font-size:12px; color:#facc15; background: rgba(250,204,21,0.08); border:1px solid rgba(250,204,21,0.25); padding:8px 10px; border-radius:10px; }
+    .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .range{ accent-color:#60a5fa; }
+    .switch { display: inline-flex; align-items:center; gap:8px; }
+    .switch input { accent-color:#22d3ee; }
+    .footer{ padding:12px 16px; border-top:1px dashed #293244; display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+    .small{ font-size:11px; color:#94a3b8; }
+  </style></head>
+<body>
+  <div class="app">
+    <div class="card panel">
+      <h1>Endless Holo Card Generator</h1>
+      <div class="muted">Satu file, siap deploy ke Vercel. Logo Endless otomatis dipakai dari <code>assets/endless-logo.png</code>.</div><div class="row">
+    <div class="grid-2">
+      <div>
+        <label>Nama / Handle</label>
+        <input id="name" type="text" placeholder="@username atau nama" value="@endless_member" />
+      </div>
+      <div>
+        <label>Title / Class</label>
+        <input id="title" type="text" placeholder="Explorer / Builder" value="Explorer" />
+      </div>
+    </div>
+    <div class="grid-2">
+      <div>
+        <label>Rarity</label>
+        <select id="rarity">
+          <option value="COMMON">COMMON</option>
+          <option value="RARE">RARE</option>
+          <option value="EPIC">EPIC</option>
+          <option value="LEGENDARY" selected>LEGENDARY</option>
+        </select>
+      </div>
+      <div>
+        <label>Power</label>
+        <input id="power" type="number" min="0" max="999" value="87" />
+      </div>
+    </div>
+    <div class="grid-2">
+      <div>
+        <label>Upload Foto (PNG/JPG)</label>
+        <input id="photo" type="file" accept="image/*" />
+      </div>
+      <div>
+        <label>Remove Background</label>
+        <div class="switch"><input id="removeBg" type="checkbox" /> <span class="muted">Client-side (eksperimental)</span></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="switch">
+        <input id="circleCrop" type="checkbox" checked />
+        <label for="circleCrop">Crop portrait jadi lingkaran</label>
+      </div>
+      <div class="grid-2" style="grid-template-columns: 1fr 1fr; gap:10px;">
+        <div>
+          <label>Hologram Strength</label>
+          <input id="holoStrength" class="range" type="range" min="0" max="100" value="50" />
+        </div>
+        <div>
+          <label>Holo Angle</label>
+          <input id="holoAngle" class="range" type="range" min="0" max="360" value="30" />
+        </div>
+      </div>
+    </div>
+    <div class="notice">Tip: siapkan <code>assets/endless-logo.png</code>. PNG transparan lebih bagus. Ukuran ideal 256×256+.</div>
+  </div>
+
+  <div class="footer">
+    <div class="toolbar">
+      <button id="btnGenerate" class="btn">Generate</button>
+      <button id="btnDownload" class="btn secondary">Download PNG</button>
+      <button id="btnTemplate" class="btn secondary">Random Template</button>
+    </div>
+    <div class="small">Ekspor: 744×1039 px (rasio kartu 2.5"×3.5")</div>
+  </div>
+</div>
+
+<div class="card preview-wrap">
+  <div class="panel"><div class="muted">Preview</div></div>
+  <div class="canvas-wrap"><canvas id="card" width="744" height="1039"></canvas></div>
+</div>
+
+  </div>  <script type="module">
+    // === Konfigurasi logo Endless ===
+    // Ganti file ini di repo kamu: assets/endless-logo.png
+    const DEFAULT_LOGO_SRC = './assets/endless-logo.png';
+
+    // Lazy load library background removal (client-side)
+    let bgRemoveLib = null;
+    async function ensureBgLib(){
+      if(bgRemoveLib) return bgRemoveLib;
+      try{ bgRemoveLib = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@2/dist/index.min.js'); }
+      catch(e){ console.warn('BG removal lib not available:', e); bgRemoveLib = null; }
+      return bgRemoveLib;
+    }
+
+    const el = (id)=>document.getElementById(id);
+    const c = el('card');
+    const ctx = c.getContext('2d');
+
+    // State
+    const state = { photo:null, logo:null, templateIndex:0 };
+
+    // Preload logo from assets
+    const preloadLogo = () => new Promise((resolve) => {
+      const img = new Image();
+      img.onload = ()=> resolve(img);
+      img.onerror = ()=> resolve(null);
+      img.src = DEFAULT_LOGO_SRC;
+    });
+
+    const TEMPLATES = [
+      { name: 'Prism', border: '#60a5fa', accent:'#a78bfa', bgA:'#0ea5e9', bgB:'#7c3aed' },
+      { name: 'Aurora', border: '#22d3ee', accent:'#10b981', bgA:'#22d3ee', bgB:'#10b981' },
+      { name: 'Inferno', border: '#f59e0b', accent:'#ef4444', bgA:'#ef4444', bgB:'#f59e0b' },
+      { name: 'Royal', border: '#60a5fa', accent:'#eab308', bgA:'#0ea5e9', bgB:'#eab308' },
+    ];
+
+    function loadImage(file){
+      return new Promise((resolve,reject)=>{
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = ()=>{ URL.revokeObjectURL(url); resolve(img); };
+        img.onerror = reject;
+        img.src = url;
+      });
+    }
+
+    function drawRoundedRect(ctx, x, y, w, h, r){
+      ctx.beginPath();
+      ctx.moveTo(x+r, y);
+      ctx.lineTo(x+w-r, y);
+      ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+      ctx.lineTo(x+w, y+h-r);
+      ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+      ctx.lineTo(x+r, y+h);
+      ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+      ctx.lineTo(x, y+r);
+      ctx.quadraticCurveTo(x, y, x+r, y);
+      ctx.closePath();
+    }
+
+    function paint(){
+      const name = el('name').value || '';
+      const title = el('title').value || '';
+      const rarity = el('rarity').value;
+      const power = parseInt(el('power').value||'0',10);
+      const circleCrop = el('circleCrop').checked;
+      const holoStrength = (+el('holoStrength').value)/100; // 0..1
+      const holoAngle = (+el('holoAngle').value) * Math.PI/180;
+      const theme = TEMPLATES[state.templateIndex % TEMPLATES.length];
+
+      // clear
+      ctx.clearRect(0,0,c.width,c.height);
+
+      // background gradient
+      const bgGrad = ctx.createLinearGradient(0,0, c.width*Math.cos(holoAngle), c.height*Math.sin(holoAngle));
+      bgGrad.addColorStop(0, theme.bgA);
+      bgGrad.addColorStop(1, theme.bgB);
+      ctx.fillStyle = bgGrad;
+      drawRoundedRect(ctx, 8,8, c.width-16, c.height-16, 30);
+      ctx.fill();
+
+      // inner panel
+      ctx.save();
+      const pad = 24;
+      const panelX = pad; const panelY = pad; const panelW = c.width - pad*2; const panelH = c.height - pad*2;
+      drawRoundedRect(ctx, panelX, panelY, panelW, panelH, 24);
+      ctx.clip();
+
+      // subtle dark overlay for readability
+      ctx.fillStyle = 'rgba(10,14,22,0.45)';
+      ctx.fillRect(panelX, panelY, panelW, panelH);
+
+      // portrait area box
+      const portraitW = panelW - 40;
+      const portraitH = Math.floor(panelH*0.56);
+      const portraitX = panelX + (panelW-portraitW)/2;
+      const portraitY = panelY + 20;
+
+      // draw portrait background placeholder
+      ctx.save();
+      if(circleCrop){
+        const r = Math.min(portraitW, portraitH)/2 - 8;
+        ctx.beginPath();
+        ctx.arc(panelX + panelW/2, portraitY + portraitH/2, r, 0, Math.PI*2);
+        ctx.closePath();
+        ctx.clip();
+      } else {
+        drawRoundedRect(ctx, portraitX, portraitY, portraitW, portraitH, 18);
+        ctx.clip();
+      }
+      if(state.photo){
+        const img = state.photo;
+        const cw = circleCrop ? (Math.min(portraitW, portraitH)) : portraitW;
+        const ch = circleCrop ? (Math.min(portraitW, portraitH)) : portraitH;
+        const scale = Math.max(cw/img.width, ch/img.height);
+        const iw = img.width*scale; const ih = img.height*scale;
+        const ix = panelX + panelW/2 - iw/2;
+        const iy = portraitY + portraitH/2 - ih/2;
+        ctx.drawImage(img, ix, iy, iw, ih);
+      } else {
+        const g = ctx.createLinearGradient(portraitX, portraitY, portraitX+portraitW, portraitY+portraitH);
+        g.addColorStop(0, '#0ea5e980');
+        g.addColorStop(1, '#7c3aed80');
+        ctx.fillStyle = g;
+        ctx.fillRect(portraitX, portraitY, portraitW, portraitH);
+      }
+      ctx.restore();
+
+      // Hologram effect overlay
+      drawHologram(ctx, panelX, portraitY, panelW, portraitH, holoStrength, holoAngle);
+
+      // Card frame
+      ctx.strokeStyle = theme.border; ctx.lineWidth = 6;
+      drawRoundedRect(ctx, 12,12, c.width-24, c.height-24, 26);
+      ctx.stroke();
+
+      // Title bar
+      const titleBarH = 64;
+      ctx.fillStyle = 'rgba(15,23,42,0.65)';
+      drawRoundedRect(ctx, panelX+12, panelY+portraitH+32, panelW-24, titleBarH, 14);
+      ctx.fill();
+
+      // Name text
+      ctx.font = '700 32px "Segoe UI", Inter, system-ui';
+      ctx.fillStyle = '#e5e7eb';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText(name || 'Unnamed', panelX+26, panelY+portraitH+32 + titleBarH/2);
+
+      // Bottom stats bar
+      const statsH = 90;
+      ctx.fillStyle = 'rgba(2,6,23,0.65)';
+      drawRoundedRect(ctx, panelX+12, panelY+portraitH+32+titleBarH+14, panelW-24, statsH, 14);
+      ctx.fill();
+
+      // Rarity tag
+      const rarityGrad = ctx.createLinearGradient(0,0,120,0);
+      rarityGrad.addColorStop(0, theme.accent);
+      rarityGrad.addColorStop(1, theme.border);
+      ctx.fillStyle = rarityGrad;
+      const tagX = panelX+26, tagY = panelY+portraitH+32+titleBarH+14+18, tagW = 160, tagH = 36;
+      drawRoundedRect(ctx, tagX, tagY, tagW, tagH, 10);
+      ctx.fill();
+      ctx.font = '800 16px Inter, system-ui';
+      ctx.fillStyle = '#0b1020';
+      ctx.textAlign = 'center';
+      ctx.fillText(rarity, tagX + tagW/2, tagY + tagH/2 + 1);
+
+      // Power on the right
+      ctx.textAlign = 'right'; ctx.fillStyle = '#e5e7eb';
+      ctx.font = '700 28px Inter, system-ui';
+      ctx.fillText(`⚡ ${String(power).padStart(2,'0')}`, panelX + panelW - 26, tagY + tagH/2 + 1);
+
+      // Subtitle / Class
+      ctx.textAlign = 'left'; ctx.fillStyle = '#9fb0ca';
+      ctx.font = '600 18px Inter, system-ui';
+      ctx.fillText(title || 'Class', panelX+26, tagY + tagH + 28);
+
+      // Endless logo (top-left) — auto from assets
+      const logoSize = 64; const lx = panelX + 12, ly = panelY + 12;
+      if(state.logo){
+        ctx.save();
+        drawRoundedRect(ctx, lx, ly, logoSize, logoSize, 12);
+        ctx.clip();
+        const img = state.logo;
+        const scale = Math.min(logoSize/img.width, logoSize/img.height);
+        const iw = img.width*scale, ih = img.height*scale;
+        ctx.drawImage(img, lx + (logoSize-iw)/2, ly + (logoSize-ih)/2, iw, ih);
+        ctx.restore();
+      } else {
+        // fallback text jika logo belum ada
+        ctx.fillStyle = '#e5e7eb';
+        ctx.font = '800 18px Inter, system-ui';
+        ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+        ctx.fillText('ENDLESS', lx, ly+6);
+        ctx.fillStyle = theme.border;
+        ctx.fillRect(lx, ly+32, 56, 6);
+      }
+
+      // Corner rarity gem (top-right)
+      const rx = panelX + panelW - 24 - 48; const ry = panelY + 12; const rsz = 48;
+      drawGem(rx, ry, rsz, theme);
+
+      ctx.restore();
+
+      // outer stroke
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 2;
+      drawRoundedRect(ctx, 8,8, c.width-16, c.height-16, 30);
+      ctx.stroke();
+    }
+
+    function drawHologram(ctx, x, y, w, h, strength, angle){
+      if(strength <= 0) return;
+      ctx.save();
+      ctx.globalCompositeOperation = 'overlay';
+      ctx.translate(x+w/2, y+h/2); ctx.rotate(angle); ctx.translate(-w/2, -h/2);
+      const stripes = Math.max(6, Math.floor(18*strength));
+      for(let i=0;i<stripes;i++){
+        const gy = (i/stripes)*h;
+        const grad = ctx.createLinearGradient(0, gy, w, gy+1);
+        grad.addColorStop(0, `hsla(${(i*30)%360}, 90%, 60%, ${0.10+0.25*strength})`);
+        grad.addColorStop(1, `hsla(${(i*30+120)%360}, 90%, 60%, 0)`);
+        ctx.fillStyle = grad; ctx.fillRect(0, gy, w, 4);
+      }
+      const dots = Math.floor(200 * strength);
+      ctx.globalCompositeOperation = 'soft-light';
+      for(let i=0;i<dots;i++){
+        const dx = Math.random()*w; const dy = Math.random()*h; const s = Math.random()*2+0.5;
+        ctx.fillStyle = `hsla(${Math.random()*360}, 100%, 75%, ${0.10+0.15*strength})`;
+        ctx.beginPath(); ctx.arc(dx, dy, s, 0, Math.PI*2); ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawGem(x, y, size, theme){
+      const g = ctx.createLinearGradient(x, y, x+size, y+size);
+      g.addColorStop(0, theme.accent); g.addColorStop(1, theme.border);
+      ctx.fillStyle = g; ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x+size/2, y); ctx.lineTo(x+size, y+size/2); ctx.lineTo(x+size/2, y+size); ctx.lineTo(x, y+size/2);
+      ctx.closePath(); ctx.fill(); ctx.restore();
+    }
+
+    async function applyRemoveBgIfChecked(img){
+      const want = el('removeBg').checked;
+      if(!want) return img;
+      try{
+        const lib = await ensureBgLib();
+        if(!lib || !lib.removeBackground) return img;
+        const blob = await lib.removeBackground(img, { debug:false });
+        const out = await createImageBitmap(blob);
+        const canvas = document.createElement('canvas');
+        canvas.width = out.width; canvas.height = out.height;
+        const c2 = canvas.getContext('2d'); c2.drawImage(out,0,0);
+        const dataURL = canvas.toDataURL();
+        const elImg = new Image(); await new Promise((res,rej)=>{ elImg.onload=()=>res(); elImg.onerror=rej; elImg.src=dataURL; });
+        return elImg;
+      }catch(e){ console.warn('Remove BG failed, using original image', e); return img; }
+    }
+
+    // Events
+    el('photo').addEventListener('change', async (e)=>{
+      const file = e.target.files?.[0]; if(!file) return;
+      let img = await loadImage(file); img = await applyRemoveBgIfChecked(img);
+      state.photo = img; paint();
+    });
+
+    ['name','title','rarity','power','circleCrop','holoStrength','holoAngle'].forEach(id=>{
+      el(id).addEventListener('input', paint);
+    });
+
+    el('btnGenerate').addEventListener('click', async ()=>{
+      if(state.photo && el('removeBg').checked){ state.photo = await applyRemoveBgIfChecked(state.photo); }
+      paint();
+    });
+
+    el('btnDownload').addEventListener('click', ()=>{
+      const link = document.createElement('a');
+      link.download = `endless_card_${Date.now()}.png`;
+      link.href = c.toDataURL('image/png'); link.click();
+    });
+
+    el('btnTemplate').addEventListener('click', ()=>{ state.templateIndex = (state.templateIndex + 1) % TEMPLATES.length; paint(); });
+
+    // Init: preload logo lalu render pertama
+    (async function init(){ state.logo = await preloadLogo(); paint(); })();
+  </script></body>
+</html>
