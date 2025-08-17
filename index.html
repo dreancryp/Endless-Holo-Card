@@ -3,25 +3,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Endless Holo Card Generator</title>
-  <!--
-  ==========================================
-  Endless Holo Card Generator — Final (Tier + Share X)
-  ==========================================
-  Cara pakai:
-  1) Simpan file ini sebagai `index.html` di root repo.
-  2) Taruh logo kamu sebagai `endless-logo.png` di root yang sama.
-  3) Deploy ke Vercel (static hosting).Perubahan sesuai permintaan:
-
-Remove BG dihapus.
-
-Input Power dihapus → otomatis dari pilihan Tier.
-
-Dropdown Tier: Tier 0/1/2 → otomatis set Power & Rarity.
-
-UI & hasil visual mengikuti versi awal (hologram vibes, frame, template).
-
-Tombol Share on X (Twitter) dengan teks aman (tanpa kata "minted"). -->
-
 
   <style>
     :root{
@@ -71,7 +52,6 @@ Tombol Share on X (Twitter) dengan teks aman (tanpa kata "minted"). -->
   <div class="app">
     <div class="card panel">
       <h1>Endless Holo Card Generator</h1>
-      <div class="muted">Versi final: hologram vibes + Tier otomatis. Logo diambil dari <code>./endless-logo.png</code>.</div><div class="row">
     <div class="grid-2">
       <div>
         <label>Nama / Handle</label>
@@ -108,9 +88,6 @@ Tombol Share on X (Twitter) dengan teks aman (tanpa kata "minted"). -->
       </div>
     </div>
 
-    <div class="notice">Tip: siapkan <code>endless-logo.png</code> (PNG transparan 500×500+) di root repo.</div>
-  </div>
-
   <div class="footer">
     <div class="toolbar">
       <button id="btnGenerate" class="btn">Generate</button>
@@ -118,8 +95,6 @@ Tombol Share on X (Twitter) dengan teks aman (tanpa kata "minted"). -->
       <button id="btnTemplate" class="btn secondary">Random Template</button>
       <button id="btnShareX" class="btn secondary">Share on X</button>
     </div>
-    <div class="small">Ekspor: 744×1039 px (rasio kartu 2.5"×3.5")</div>
-  </div>
 
   <div class="share-preview">
     <div class="muted">Share Preview (hasil terakhir):</div>
