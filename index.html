@@ -54,7 +54,7 @@
       <h1>Endless Holo Card Generator</h1>
     <div class="grid-2">
       <div>
-        <label>Nama / Handle</label>
+        <label>Nickname</label>
         <input id="name" type="text" placeholder="@username atau nama" value="@endless_member" />
       </div>
       <div>
@@ -68,12 +68,12 @@
     </div>
     <div class="grid-2">
       <div>
-        <label>Upload Foto (PNG/JPG)</label>
+        <label>Upload Photo (PNG/JPG)</label>
         <input id="photo" type="file" accept="image/*" />
       </div>
       <div class="switch">
         <input id="circleCrop" type="checkbox" checked />
-        <label for="circleCrop">Crop portrait jadi lingkaran</label>
+        <label for="circleCrop">Crop portrait to circle</label>
       </div>
     </div>
 
@@ -97,7 +97,7 @@
     </div>
 
   <div class="share-preview">
-    <div class="muted">Share Preview (hasil terakhir):</div>
+    <div class="muted">Share Preview (final result):</div>
     <img id="previewImg" alt="Preview image will appear here after Generate" />
   </div>
 </div>
@@ -128,6 +128,14 @@
       { name: 'Aurora', border: '#22d3ee', accent:'#10b981', bgA:'#22d3ee', bgB:'#10b981' },
       { name: 'Inferno', border: '#f59e0b', accent:'#ef4444', bgA:'#ef4444', bgB:'#f59e0b' },
       { name: 'Royal', border: '#60a5fa', accent:'#eab308', bgA:'#0ea5e9', bgB:'#eab308' },
+  { name: 'Aqua', border: '#3b82f6', accent:'#06b6d4', bgA:'#0ea5e9', bgB:'#3b82f6' },
+  { name: 'Forest', border: '#22c55e', accent:'#166534', bgA:'#15803d', bgB:'#4ade80' },
+  { name: 'Void', border: '#9333ea', accent:'#a21caf', bgA:'#4c1d95', bgB:'#9333ea' },
+  { name: 'Sunrise', border: '#f97316', accent:'#facc15', bgA:'#f59e0b', bgB:'#ef4444' },
+  { name: 'Cyber', border: '#06b6d4', accent:'#ec4899', bgA:'#0ea5e9', bgB:'#9333ea' },
+  { name: 'Silver', border: '#d1d5db', accent:'#9ca3af', bgA:'#e5e7eb', bgB:'#6b7280' },
+  { name: 'Gold', border: '#facc15', accent:'#f59e0b', bgA:'#fde047', bgB:'#f59e0b' },
+  { name: 'Plasma', border: '#ec4899', accent:'#22d3ee', bgA:'#db2777', bgB:'#06b6d4' },
     ];
 
     function loadImage(file){
