@@ -3,20 +3,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Endless Holo Card Generator</title>
-  <!--
-  ==========================================
-  Endless Holo Card Generator — Single File
-  ==========================================
-  Cara pakai (super cepat):
-  1) Buat repo GitHub baru, tambah file ini sebagai `index.html`.
-  2) Buat folder `assets/` dan taruh logo kamu di: `assets/endless-logo.png` (background transparan ideal).
-  3) Deploy ke Vercel → pilih Project dari repo → semuanya statis, tidak perlu server.Opsi Lanjutan:
-
-Ingin kualitas remove background lebih konsisten? Ganti client-side lib dengan API di serverless function.
-
-Ubah template warna di konstanta TEMPLATES.
-
-Atur dimensi export di <canvas> (saat ini 744×1039 px, rasio 2.5"×3.5"). -->
 
 
   <style>
@@ -129,7 +115,7 @@ Atur dimensi export di <canvas> (saat ini 744×1039 px, rasio 2.5"×3.5"). -->
   </div>  <script type="module">
     // === Konfigurasi logo Endless ===
     // Ganti file ini di repo kamu: assets/endless-logo.png
-    const DEFAULT_LOGO_SRC = './assets/endless-logo.png';
+    const DEFAULT_LOGO_SRC = 'endless-logo.png';
 
     // Lazy load library background removal (client-side)
     let bgRemoveLib = null;
