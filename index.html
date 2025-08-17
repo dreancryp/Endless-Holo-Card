@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,101 +14,318 @@
     }
     *{box-sizing:border-box}
     body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-      color:#e5e7eb; background: radial-gradient(1000px 600px at 10% -10%, #0ea5e9 0%, transparent 40%), radial-gradient(800px 400px at 110% 10%, #7c3aed 0%, transparent 30%), var(--bg);
-      min-height:100vh; display:grid; place-items:stretch;
+      margin:0; 
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color:#e5e7eb; 
+      background: radial-gradient(1000px 600px at 10% -10%, #0ea5e9 0%, transparent 40%), radial-gradient(800px 400px at 110% 10%, #7c3aed 0%, transparent 30%), var(--bg);
+      min-height:100vh; 
+      padding: 20px;
     }
-    .app{display:grid; grid-template-columns: 360px 1fr; gap:18px; padding:18px; max-width:1200px; margin:0 auto; width:100%;}
-    @media (max-width: 980px){ .app{ grid-template-columns: 1fr; } }
-    .card{ background: linear-gradient(180deg, rgba(17,24,39,0.85), rgba(17,24,39,0.65)); border:1px solid #1f2937; border-radius:18px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-    .panel{ padding:16px; }
-    h1{ font-size:20px; margin:0; letter-spacing:0.3px; }
+    
+    .app{
+      display: grid; 
+      grid-template-columns: 400px 1fr; 
+      gap: 24px; 
+      max-width: 1400px; 
+      margin: 0 auto; 
+      width: 100%;
+      min-height: calc(100vh - 40px);
+    }
+    
+    /* Mobile responsive */
+    @media (max-width: 980px){ 
+      .app{ 
+        grid-template-columns: 1fr; 
+        gap: 16px;
+      } 
+    }
+    
+    @media (max-width: 640px){
+      body { padding: 12px; }
+      .app { gap: 12px; }
+    }
+    
+    .card{ 
+      background: linear-gradient(180deg, rgba(17,24,39,0.85), rgba(17,24,39,0.65)); 
+      border:1px solid #1f2937; 
+      border-radius:18px; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      height: fit-content;
+    }
+    
+    .panel{ padding:20px; }
+    
+    h1{ 
+      font-size:24px; 
+      margin:0 0 20px 0; 
+      letter-spacing:0.3px; 
+      text-align: center;
+      background: linear-gradient(135deg, #22d3ee, #3b82f6, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
     .muted{ color: var(--muted); font-size:12px; }
-    .row{ display:grid; grid-template-columns: 1fr; gap:10px; margin-top:12px; }
-    label{ font-size:12px; color:#cbd5e1; }
-    input[type="text"], select{
-      width:100%; padding:10px 12px; border-radius:12px; border:1px solid #334155; background:#0f172a; color:#e5e7eb; outline:none;
+    .row{ display:grid; grid-template-columns: 1fr; gap:12px; margin-top:16px; }
+    
+    label{ 
+      font-size:13px; 
+      color:#cbd5e1; 
+      font-weight: 500;
+      margin-bottom: 6px;
+      display: block;
     }
-    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; border-radius:12px; background: linear-gradient(135deg, #22d3ee, #3b82f6 40%, #a855f7 100%);
-      color:white; border:none; cursor:pointer; box-shadow: 0 8px 24px rgba(56,189,248,0.35); transition: transform .08s ease; }
-    .btn:active{ transform: translateY(1px) }
-    .btn.secondary{ background:#0b1220; border:1px solid #334155; box-shadow:none; }
+    
+    input[type="text"], select, input[type="file"]{
+      width:100%; 
+      padding:12px 14px; 
+      border-radius:12px; 
+      border:1px solid #334155; 
+      background:#0f172a; 
+      color:#e5e7eb; 
+      outline:none;
+      transition: border-color 0.2s ease;
+    }
+    
+    input[type="text"]:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+    }
+    
+    .btn{ 
+      display:inline-flex; 
+      align-items:center; 
+      justify-content:center; 
+      gap:8px; 
+      padding:12px 16px; 
+      border-radius:12px; 
+      background: linear-gradient(135deg, #22d3ee, #3b82f6 40%, #a855f7 100%);
+      color:white; 
+      border:none; 
+      cursor:pointer; 
+      box-shadow: 0 8px 24px rgba(56,189,248,0.35); 
+      transition: all .15s ease;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(56,189,248,0.45);
+    }
+    
+    .btn:active{ transform: translateY(0px) }
+    
+    .btn.secondary{ 
+      background:#0b1220; 
+      border:1px solid #334155; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
+    }
+    
+    .btn.secondary:hover {
+      background:#1e293b;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
 
-    .preview-wrap{ position:relative; display:grid; grid-template-rows: auto 1fr; gap:12px; padding:16px; }
-    .canvas-wrap{ position:relative; width:100%; display:grid; place-items:center; }
-    canvas{ width: 372px; height: 519px; border-radius:18px; border:1px solid #1f2937; background:#111827; box-shadow: 0 14px 40px rgba(0,0,0,0.45); }
-    .toolbar{ display:flex; gap:10px; flex-wrap:wrap; }
+    .preview-wrap{ 
+      display: grid; 
+      grid-template-rows: auto 1fr auto; 
+      gap: 16px; 
+      padding: 20px;
+      position: relative;
+    }
+    
+    .preview-header {
+      text-align: center;
+    }
+    
+    .preview-header h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #e5e7eb;
+    }
+    
+    .canvas-wrap{ 
+      position:relative; 
+      width:100%; 
+      display:grid; 
+      place-items:center; 
+      min-height: 400px;
+    }
+    
+    canvas{ 
+      max-width: 100%;
+      height: auto;
+      aspect-ratio: 744/1039;
+      border-radius:18px; 
+      border:1px solid #1f2937; 
+      background:#111827; 
+      box-shadow: 0 14px 40px rgba(0,0,0,0.45);
+    }
+    
+    /* Desktop canvas sizing */
+    @media (min-width: 981px) {
+      canvas {
+        width: 372px;
+        height: 519px;
+      }
+    }
+    
+    /* Mobile canvas sizing */
+    @media (max-width: 980px) {
+      canvas {
+        width: min(372px, 90vw);
+        height: auto;
+      }
+    }
+    
+    .toolbar{ 
+      display:grid; 
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap:12px; 
+    }
 
-    .notice{ font-size:12px; color:#a3e635; background: rgba(163,230,53,0.08); border:1px solid rgba(163,230,53,0.25); padding:8px 10px; border-radius:10px; }
-    .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-    .range{ accent-color:#60a5fa; }
-    .switch { display: inline-flex; align-items:center; gap:8px; }
-    .footer{ padding:12px 16px; border-top:1px dashed #293244; display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
-    .small{ font-size:11px; color:#94a3b8; }
+    .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    
+    @media (max-width: 640px) {
+      .grid-2 { grid-template-columns: 1fr; gap: 10px; }
+    }
+    
+    .range{ 
+      accent-color:#60a5fa; 
+      width: 100%;
+      height: 6px;
+      background: #334155;
+      border-radius: 3px;
+      outline: none;
+    }
+    
+    .switch { 
+      display: flex; 
+      align-items:center; 
+      gap:8px; 
+      font-size: 13px;
+    }
+    
+    .switch input[type="checkbox"] {
+      width: auto;
+      accent-color: var(--accent);
+    }
+    
+    .form-section {
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px dashed #293244;
+    }
+    
+    .form-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 12px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #334155;
+    }
 
-    .share-preview{ margin:10px auto 0; max-width:372px; display:grid; gap:8px; }
-    .share-preview img{ width:100%; border-radius:12px; border:1px solid #243244; }
-  </style></head>
+    .range-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .range-value {
+      font-size: 11px;
+      color: var(--accent);
+      text-align: center;
+    }
+  </style>
+</head>
 <body>
   <div class="app">
+    <!-- Control Panel -->
     <div class="card panel">
       <h1>Endless Holo Card Generator</h1>
-    <div class="grid-2">
-      <div>
-        <label>Nickname</label>
-        <input id="name" type="text" placeholder="@username atau nama" value="@endless_member" />
+      
+      <!-- Basic Info Section -->
+      <div class="form-section">
+        <div class="section-title">Basic Information</div>
+        <div class="grid-2">
+          <div>
+            <label>Nickname</label>
+            <input id="name" type="text" placeholder="@username atau nama" value="@endless_member" />
+          </div>
+          <div>
+            <label>Tier</label>
+            <select id="tier">
+              <option value="0" selected>Tier 0 → Legendary (1000)</option>
+              <option value="1">Tier 1 → Epic (700)</option>
+              <option value="2">Tier 2 → Rare (300)</option>
+            </select>
+          </div>
+        </div>
       </div>
-      <div>
-        <label>Tier</label>
-        <select id="tier">
-          <option value="0" selected>Tier 0 → Legendary (1000)</option>
-          <option value="1">Tier 1 → Epic (700)</option>
-          <option value="2">Tier 2 → Rare (300)</option>
-        </select>
+      
+      <!-- Photo Section -->
+      <div class="form-section">
+        <div class="section-title">Photo Settings</div>
+        <div class="grid-2">
+          <div>
+            <label>Upload Photo (PNG/JPG)</label>
+            <input id="photo" type="file" accept="image/*" />
+          </div>
+          <div class="switch">
+            <input id="circleCrop" type="checkbox" checked />
+            <label for="circleCrop">Crop portrait to circle</label>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="grid-2">
-      <div>
-        <label>Upload Photo (PNG/JPG)</label>
-        <input id="photo" type="file" accept="image/*" />
+
+      <!-- Hologram Effects Section -->
+      <div class="form-section">
+        <div class="section-title">Hologram Effects</div>
+        <div class="grid-2">
+          <div class="range-wrapper">
+            <label>Hologram Strength</label>
+            <input id="holoStrength" class="range" type="range" min="0" max="100" value="50" />
+            <div id="holoStrengthValue" class="range-value">50%</div>
+          </div>
+          <div class="range-wrapper">
+            <label>Holo Angle</label>
+            <input id="holoAngle" class="range" type="range" min="0" max="360" value="30" />
+            <div id="holoAngleValue" class="range-value">30°</div>
+          </div>
+        </div>
       </div>
-      <div class="switch">
-        <input id="circleCrop" type="checkbox" checked />
-        <label for="circleCrop">Crop portrait to circle</label>
+
+      <!-- Actions -->
+      <div class="toolbar">
+        <button id="btnGenerate" class="btn">✨ Generate</button>
+        <button id="btnDownload" class="btn secondary">📥 Download</button>
+        <button id="btnTemplate" class="btn secondary">🎨 Random</button>
+        <button id="btnShareX" class="btn secondary">🐦 Share X</button>
       </div>
     </div>
 
-    <div class="grid-2">
-      <div>
-        <label>Hologram Strength</label>
-        <input id="holoStrength" class="range" type="range" min="0" max="100" value="50" />
+    <!-- Preview Panel -->
+    <div class="card preview-wrap">
+      <div class="preview-header">
+        <h2>🔮 Card Preview</h2>
+        <div class="muted">Your holographic card will appear below</div>
       </div>
-      <div>
-        <label>Holo Angle</label>
-        <input id="holoAngle" class="range" type="range" min="0" max="360" value="30" />
+      
+      <div class="canvas-wrap">
+        <canvas id="card" width="744" height="1039"></canvas>
       </div>
     </div>
-
-  <div class="footer">
-    <div class="toolbar">
-      <button id="btnGenerate" class="btn">Generate</button>
-      <button id="btnDownload" class="btn secondary">Download PNG</button>
-      <button id="btnTemplate" class="btn secondary">Random Template</button>
-      <button id="btnShareX" class="btn secondary">Share on X</button>
-    </div>
-
-  <div class="share-preview">
-    <div class="muted">Share Preview (final result):</div>
-    <img id="previewImg" alt="Preview image will appear here after Generate" />
   </div>
-</div>
 
-<div class="card preview-wrap">
-  <div class="panel"><div class="muted">Preview</div></div>
-  <div class="canvas-wrap"><canvas id="card" width="744" height="1039"></canvas></div>
-</div>
-
-  </div>  <script type="module">
+  <script type="module">
     // === Konfigurasi logo Endless ===
     const DEFAULT_LOGO_SRC = './endless-logo.png';
 
@@ -120,7 +338,10 @@
 
     // Preload logo dari root
     const preloadLogo = () => new Promise((resolve) => {
-      const img = new Image(); img.onload = ()=> resolve(img); img.onerror = ()=> resolve(null); img.src = DEFAULT_LOGO_SRC;
+      const img = new Image(); 
+      img.onload = ()=> resolve(img); 
+      img.onerror = ()=> resolve(null); 
+      img.src = DEFAULT_LOGO_SRC;
     });
 
     const TEMPLATES = [
@@ -128,14 +349,14 @@
       { name: 'Aurora', border: '#22d3ee', accent:'#10b981', bgA:'#22d3ee', bgB:'#10b981' },
       { name: 'Inferno', border: '#f59e0b', accent:'#ef4444', bgA:'#ef4444', bgB:'#f59e0b' },
       { name: 'Royal', border: '#60a5fa', accent:'#eab308', bgA:'#0ea5e9', bgB:'#eab308' },
-  { name: 'Aqua', border: '#3b82f6', accent:'#06b6d4', bgA:'#0ea5e9', bgB:'#3b82f6' },
-  { name: 'Forest', border: '#22c55e', accent:'#166534', bgA:'#15803d', bgB:'#4ade80' },
-  { name: 'Void', border: '#9333ea', accent:'#a21caf', bgA:'#4c1d95', bgB:'#9333ea' },
-  { name: 'Sunrise', border: '#f97316', accent:'#facc15', bgA:'#f59e0b', bgB:'#ef4444' },
-  { name: 'Cyber', border: '#06b6d4', accent:'#ec4899', bgA:'#0ea5e9', bgB:'#9333ea' },
-  { name: 'Silver', border: '#d1d5db', accent:'#9ca3af', bgA:'#e5e7eb', bgB:'#6b7280' },
-  { name: 'Gold', border: '#facc15', accent:'#f59e0b', bgA:'#fde047', bgB:'#f59e0b' },
-  { name: 'Plasma', border: '#ec4899', accent:'#22d3ee', bgA:'#db2777', bgB:'#06b6d4' },
+      { name: 'Aqua', border: '#3b82f6', accent:'#06b6d4', bgA:'#0ea5e9', bgB:'#3b82f6' },
+      { name: 'Forest', border: '#22c55e', accent:'#166534', bgA:'#15803d', bgB:'#4ade80' },
+      { name: 'Void', border: '#9333ea', accent:'#a21caf', bgA:'#4c1d95', bgB:'#9333ea' },
+      { name: 'Sunrise', border: '#f97316', accent:'#facc15', bgA:'#f59e0b', bgB:'#ef4444' },
+      { name: 'Cyber', border: '#06b6d4', accent:'#ec4899', bgA:'#0ea5e9', bgB:'#9333ea' },
+      { name: 'Silver', border: '#d1d5db', accent:'#9ca3af', bgA:'#e5e7eb', bgB:'#6b7280' },
+      { name: 'Gold', border: '#facc15', accent:'#f59e0b', bgA:'#fde047', bgB:'#f59e0b' },
+      { name: 'Plasma', border: '#ec4899', accent:'#22d3ee', bgA:'#db2777', bgB:'#06b6d4' },
     ];
 
     function loadImage(file){
@@ -143,7 +364,8 @@
         const url = URL.createObjectURL(file);
         const img = new Image();
         img.onload = ()=>{ URL.revokeObjectURL(url); resolve(img); };
-        img.onerror = reject; img.src = url;
+        img.onerror = reject; 
+        img.src = url;
       });
     }
 
@@ -162,10 +384,16 @@
     }
 
     function getTierMapping(val){
-      // returns {rarity, power}
       if(String(val)==='0') return { rarity:'LEGENDARY', power:1000 };
       if(String(val)==='1') return { rarity:'EPIC', power:700 };
       return { rarity:'RARE', power:300 };
+    }
+
+    function updateRangeValues() {
+      const holoStrength = el('holoStrength').value;
+      const holoAngle = el('holoAngle').value;
+      el('holoStrengthValue').textContent = holoStrength + '%';
+      el('holoAngleValue').textContent = holoAngle + '°';
     }
 
     function paint(){
@@ -173,14 +401,14 @@
       const tierVal = el('tier').value;
       const { rarity, power } = getTierMapping(tierVal);
       const circleCrop = el('circleCrop').checked;
-      const holoStrength = (+el('holoStrength').value)/100; // 0..1
+      const holoStrength = (+el('holoStrength').value)/100;
       const holoAngle = (+el('holoAngle').value) * Math.PI/180;
       const theme = TEMPLATES[state.templateIndex % TEMPLATES.length];
 
-      // clear
+      // Clear canvas
       ctx.clearRect(0,0,c.width,c.height);
 
-      // background gradient
+      // Background gradient
       const bgGrad = ctx.createLinearGradient(0,0, c.width*Math.cos(holoAngle), c.height*Math.sin(holoAngle));
       bgGrad.addColorStop(0, theme.bgA);
       bgGrad.addColorStop(1, theme.bgB);
@@ -188,18 +416,18 @@
       drawRoundedRect(ctx, 8,8, c.width-16, c.height-16, 30);
       ctx.fill();
 
-      // inner panel
+      // Inner panel
       ctx.save();
       const pad = 24;
       const panelX = pad; const panelY = pad; const panelW = c.width - pad*2; const panelH = c.height - pad*2;
       drawRoundedRect(ctx, panelX, panelY, panelW, panelH, 24);
       ctx.clip();
 
-      // subtle dark overlay for readability
+      // Subtle dark overlay
       ctx.fillStyle = 'rgba(10,14,22,0.45)';
       ctx.fillRect(panelX, panelY, panelW, panelH);
 
-      // portrait area
+      // Portrait area
       const portraitW = panelW - 40;
       const portraitH = Math.floor(panelH*0.56);
       const portraitX = panelX + (panelW-portraitW)/2;
@@ -215,6 +443,7 @@
         drawRoundedRect(ctx, portraitX, portraitY, portraitW, portraitH, 18);
         ctx.clip();
       }
+      
       if(state.photo){
         const img = state.photo;
         const cw = circleCrop ? (Math.min(portraitW, portraitH)) : portraitW;
@@ -231,7 +460,7 @@
       }
       ctx.restore();
 
-      // Hologram effect overlay on portrait
+      // Hologram effect
       drawHologram(ctx, panelX, portraitY, panelW, portraitH, holoStrength, holoAngle);
 
       // Card frame
@@ -239,7 +468,7 @@
       drawRoundedRect(ctx, 12,12, c.width-24, c.height-24, 26);
       ctx.stroke();
 
-      // Title bar (name)
+      // Title bar
       const titleBarH = 64;
       ctx.fillStyle = 'rgba(15,23,42,0.65)';
       drawRoundedRect(ctx, panelX+12, panelY+portraitH+32, panelW-24, titleBarH, 14);
@@ -250,13 +479,13 @@
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       ctx.fillText(name || 'Unnamed', panelX+26, panelY+portraitH+32 + titleBarH/2);
 
-      // Bottom stats bar
+      // Stats bar
       const statsH = 90;
       ctx.fillStyle = 'rgba(2,6,23,0.65)';
       drawRoundedRect(ctx, panelX+12, panelY+portraitH+32+titleBarH+14, panelW-24, statsH, 14);
       ctx.fill();
 
-      // Rarity tag (from Tier)
+      // Rarity tag
       const rarityGrad = ctx.createLinearGradient(0,0,120,0);
       rarityGrad.addColorStop(0, theme.accent);
       rarityGrad.addColorStop(1, theme.border);
@@ -266,12 +495,12 @@
       ctx.font = '800 16px Inter, system-ui'; ctx.fillStyle = '#0b1020'; ctx.textAlign = 'center';
       ctx.fillText(rarity, tagX + tagW/2, tagY + tagH/2 + 1);
 
-      // Power on the right (auto)
+      // Power
       ctx.textAlign = 'right'; ctx.fillStyle = '#e5e7eb';
       ctx.font = '700 28px Inter, system-ui';
       ctx.fillText(`⚡ ${String(power)}`, panelX + panelW - 26, tagY + tagH/2 + 1);
 
-      // Endless logo (top-left) — auto from root
+      // Logo
       const logoSize = 64; const lx = panelX + 12, ly = panelY + 12;
       if(state.logo){
         ctx.save(); drawRoundedRect(ctx, lx, ly, logoSize, logoSize, 12); ctx.clip();
@@ -284,15 +513,17 @@
         ctx.fillText('ENDLESS', lx, ly+6); ctx.fillStyle = theme.border; ctx.fillRect(lx, ly+32, 56, 6);
       }
 
-      // Corner rarity gem (top-right)
+      // Corner gem
       const rx = panelX + panelW - 24 - 48; const ry = panelY + 12; const rsz = 48;
       drawGem(rx, ry, rsz, theme);
 
       ctx.restore();
 
-      // outer stroke
+      // Outer stroke
       ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 2;
       drawRoundedRect(ctx, 8,8, c.width-16, c.height-16, 30); ctx.stroke();
+      
+      updateRangeValues();
     }
 
     function drawHologram(ctx, x, y, w, h, strength, angle){
@@ -326,26 +557,39 @@
       ctx.closePath(); ctx.fill(); ctx.restore();
     }
 
-    // Events
+    // Event listeners
     el('photo').addEventListener('change', async (e)=>{
-      const file = e.target.files?.[0]; if(!file) return;
-      state.photo = await loadImage(file); paint();
+      const file = e.target.files?.[0]; 
+      if(!file) return;
+      state.photo = await loadImage(file); 
+      paint();
     });
 
-    ['name','tier','circleCrop','holoStrength','holoAngle'].forEach(id=>{
+    ['name','tier','circleCrop'].forEach(id=>{
       el(id).addEventListener('input', paint);
     });
 
-    el('btnGenerate').addEventListener('click', ()=>{ paint(); updatePreviewImage(); });
-
-    el('btnDownload').addEventListener('click', ()=>{
-      const link = document.createElement('a'); link.download = `endless_card_${Date.now()}.png`;
-      link.href = c.toDataURL('image/png'); link.click();
+    ['holoStrength', 'holoAngle'].forEach(id=>{
+      el(id).addEventListener('input', () => {
+        updateRangeValues();
+        paint();
+      });
     });
 
-    el('btnTemplate').addEventListener('click', ()=>{ state.templateIndex = (state.templateIndex + 1) % TEMPLATES.length; paint(); updatePreviewImage(); });
+    el('btnGenerate').addEventListener('click', paint);
 
-    // Share on X (Twitter intent)
+    el('btnDownload').addEventListener('click', ()=>{
+      const link = document.createElement('a'); 
+      link.download = `endless_card_${Date.now()}.png`;
+      link.href = c.toDataURL('image/png'); 
+      link.click();
+    });
+
+    el('btnTemplate').addEventListener('click', ()=>{ 
+      state.templateIndex = (state.templateIndex + 1) % TEMPLATES.length; 
+      paint(); 
+    });
+
     const SHARE_TEXT = "Just created my Endless Holo Card ✨ A new way to show identity in the community! #Endless #Web3 #HoloCard";
     el('btnShareX').addEventListener('click', ()=>{
       const text = encodeURIComponent(SHARE_TEXT);
@@ -353,13 +597,11 @@
       window.open(url, '_blank');
     });
 
-    function updatePreviewImage(){
-      const imgEl = el('previewImg');
-      try{ imgEl.src = c.toDataURL('image/png'); }
-      catch(e){ console.warn('Preview update failed', e); }
-    }
-
-    // Init
-    (async function init(){ state.logo = await preloadLogo(); paint(); updatePreviewImage(); })();
-  </script></body>
-  </html>
+    // Initialize
+    (async function init(){ 
+      state.logo = await preloadLogo(); 
+      paint(); 
+    })();
+  </script>
+</body>
+</html>
